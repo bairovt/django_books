@@ -15,7 +15,24 @@ class Customer(models.Model):
     note = models.TextField()
     created_at = models.DateTimeField(default=datetime.now)
 
+    def __str__(self):
+        return self.name
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
     price = models.IntegerField()
+
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
