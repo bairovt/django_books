@@ -16,4 +16,6 @@ class Customer(models.Model):
     created_at = models.DateTimeField(default=datetime.now)
 
 
-# class Book(models)
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    price = models.IntegerField()
