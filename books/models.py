@@ -3,22 +3,6 @@ from datetime import datetime
 
 # Create your models here.
 
-class Customer(models.Model):
-    name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=30)
-    phone2 = models.CharField(max_length=30)
-    # job
-    jobname = models.CharField(max_length=255)
-    # place
-    placename = models.CharField(max_length=255)
-    
-    note = models.TextField()
-    created_at = models.DateTimeField(default=datetime.now)
-
-    def __str__(self):
-        return self.name
-
-
 class Author(models.Model):
     name = models.CharField(max_length=255)
 
@@ -36,3 +20,26 @@ class Book(models.Model):
         return self.title
 
 
+class Customer(models.Model):
+    name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=30, blank=True, null=True)
+    phone2 = models.CharField(max_length=30, blank=True, null=True)
+    # job
+    jobname = models.CharField(max_length=255, blank=True, null=True)
+    # place
+    placename = models.CharField(max_length=255, blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=datetime.now)
+
+    books = models.ManyToManyField(Book, through='CustomerBook')
+
+    def __str__(self):
+        return self.name
+
+
+class CustomerBook(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    status = models.CharField(max_length=30, blank=True, null=True) # ordered, refused
+    received_at = models.DateField(null=True, blank=True)
+    paidSum = models.PositiveIntegerField(blank=True, null=True)
